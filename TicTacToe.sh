@@ -251,6 +251,19 @@ function corners() {
 	fi
 
 }
+function checkCenter() {
+		if [[ $center -ne 1 ]]
+		then
+			if [[ ${gameBoard[1,1]} == . ]]
+			then
+				gameBoard[1,1]=$computer
+				((count++))
+			else
+				takeSides
+			fi
+		fi
+}
+
 reset
 whoPlayFirst
 assignLetter
