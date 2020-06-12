@@ -62,7 +62,7 @@ function display() {
 
 function playerTurn() {
 	echo "Players turn "
-	read -p "Enter number between 1 to 9" position
+	read -p "Enter number between 1 to 9 :" position
 	changeTurn=$player
 	isEmpty
 		case $position in
@@ -140,7 +140,7 @@ function isEmpty() {
 		row=$(($position / $rowSize))
 		if [[ $(($position % $rowSize)) -eq 0 ]]
 		then
-			row=$(($rowSize-1))
+			row=$(($row-1))
 		fi
 
 	
