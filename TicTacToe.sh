@@ -1,5 +1,7 @@
 #!/bin/bash -x
 echo "Weclome to Tic Tac Toe Game"
+#constant
+
 #variables
 block=0
 count=0
@@ -24,20 +26,23 @@ function reset() {
 		done
 	done
 }
-function whoPlayFirst() {
-	turn=$((RANDOM % 2))
-	if [ $turn -eq 0 ]
-	then
-		playerSwitch=0
-		echo "Player plays first"
-	fi
-}
+#reset
+#display
 function assignLetter() {
 	toss=$((RANDOM % 2))
 	if [ $toss -eq 0 ]
 	then
 		player=x
 		computer=o
+	fi
+}
+
+function whoPlayFirst() {
+	turn=$((RANDOM % 2))
+	if [ $turn -eq 0 ]
+	then
+		playerSwitch=0
+		echo "Player plays first"
 	fi
 }
 function display() {
@@ -53,6 +58,7 @@ function display() {
 	echo
 	echo "		*************************"
 }
+
 
 function playerTurn() {
 	echo "Players turn "
@@ -127,12 +133,45 @@ function playerSwitch() {
 	winningCheck $changeTurn
 }
 
+
+function isEmpty() {
+	if [[ $position -ge 1 && $position -le 9 ]]
+	then
+		row=$(($position / $rowSize))
+		if [[ $(($position % $rowSize)) -eq 0 ]]
+		then
+			row=$(($rowSize-1))
+		fi
+
+	
+	       column=$(( $position %  $columnSize ))
+               if [ $column -eq 0 ]
+               then
+                  column=$(( $column + 2 ))
+               else
+                  column=$(( $column - 1 ))
+               fi
+		if [[ ${gameBoard[$row,$column]} == "." ]]
+		then
+			echo "		$changeTurn is now at $position"
+			((count++))
+		else
+			echo "Already placed value"
+			playerSwitch
+		fi
+	else
+		echo "Invalid value"
+		playerSwitch
+	fi
+}
+
 function winningCheck() {
+	local checker=$1
 if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
 	then
 		if [[ ${gameBoard[0,0]} == ${gameBoard[2,2]} ]]
 		then
-			if [[ ${gameBoard[0,0]} == $currentPlayer ]]
+			if [[ ${gameBoard[0,0]} == $checker ]]
 			then
 				winner=1
 			fi
@@ -142,9 +181,8 @@ if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
 	then
 		if [[ ${gameBoard[0,2]} == ${gameBoard[2,0]} ]]
 		then
-			if [[ ${gameBoard[0,2]} == $currentPlayer ]]
+			if [[ ${gameBoard[0,2]} == $checker ]]
 			then
-				#echo "Player $currentPlayer won"
 				winner=1
 			fi
 		fi
@@ -155,11 +193,9 @@ if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
 	then
 		if [[ ${gameBoard[$place,0]} == ${gameBoard[$place,2]} ]]
 		then
-			if [[ ${gameBoard[$place,0]} == $currentPlayer ]]
+			if [[ ${gameBoard[$place,0]} == $checker ]]
 			then
-				#echo "Player $currentPlayer won"
 				winner=1
-				#return $won
 			fi
 		fi
 	fi
@@ -167,16 +203,15 @@ if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
 	then
 		if [[ ${gameBoard[0,$place]} == ${gameBoard[2,$place]} ]]
 		then
-			if [[ ${gameBoard[0,$place]} == $currentPlayer ]]
+			if [[ ${gameBoard[0,$place]} == $checker ]]
 			then
-				echo "Player $currentPlayer won"
-				#won=0
-				#return $won
+				winner=1
 			fi
 		fi
 	fi
 	done
 }
+
 
 function computingToWin() {
 	for (( row=0;row<rowSize;row++ ))
@@ -186,6 +221,7 @@ function computingToWin() {
 			if [[ ${gameBoard[$row,$col]} == "." ]]
 			then
 				gameBoard[$row,$col]=$computer
+				winningCheck $computer
 				if [[ $winner -eq 1 ]]
 				then
 					display
@@ -199,15 +235,15 @@ function computingToWin() {
 		done
 	done
 }
-
 function toBlock() {
 	for (( row=0;row<rowSize;row++ ))
 	do
 		for (( col=0;col<columnSize; col++ ))
 		do
-			if [[ ${gameBoard[$row,$col]]} == "." ]]
+			if [[ ${gameBoard[$row,$col]} == . ]]
 			then
-				gameBoard[$row,$col]=$computer
+				gameBoard[$row,$col]=$player
+				winningCheck $player
 				if [[ $winner -eq 1 ]]
 				then
 					gameBoard[$row,$col]=$computer
@@ -223,6 +259,7 @@ function toBlock() {
 		done
 	done
 }
+
 function corners() {
 	if [[ ${gameBoard[0,0]} == . ]]
 	then
@@ -249,8 +286,10 @@ function corners() {
 		((count++))
 		break
 	fi
+	checkCenter
 
 }
+
 function checkCenter() {
 		if [[ $center -ne 1 ]]
 		then
@@ -288,9 +327,25 @@ function takeSides() {
 	fi
 }
 
+function gameStatus() {
+	if [[ $winner -eq 1 ]]
+	then
+		echo "Winner is $changeTurn"
+		exit
+	elif [[ $count -ge 9 ]]
+	then
+		echo "Tie"
+	fi	
+}
+
 reset
-whoPlayFirst
 assignLetter
+whoPlayFirst
 display
-winningCheck
-computingToWin
+while [[ $count -ne 9 ]]
+do
+	playerSwitch
+	#clear
+	display
+	gameStatus
+done
