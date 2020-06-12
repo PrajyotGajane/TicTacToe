@@ -32,5 +32,14 @@ function whoPlayFirst() {
 		echo "Player plays first"
 	fi
 }
+function assignLetter() {
+	toss=$((RANDOM % 2))
+	if [ $toss -eq 0 ]
+	then
+		player=x
+		computer=o
+	fi
+}
 reset
 whoPlayFirst
+assignLetter
