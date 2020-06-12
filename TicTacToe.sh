@@ -53,7 +53,59 @@ function display() {
 	echo
 	echo "		*************************"
 }
+function winningCheck() {
+if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
+	then
+		if [[ ${gameBoard[0,0]} == ${gameBoard[2,2]} ]]
+		then
+			if [[ ${gameBoard[0,0]} == $currentPlayer ]]
+			then
+				winner=1
+			fi
+		fi
+	fi
+	if [[ ${gameBoard[0,2]} == ${gameBoard[1,1]} ]]
+	then
+		if [[ ${gameBoard[0,2]} == ${gameBoard[2,0]} ]]
+		then
+			if [[ ${gameBoard[0,2]} == $currentPlayer ]]
+			then
+				#echo "Player $currentPlayer won"
+				winner=1
+			fi
+		fi
+	fi
+	for (( place=0; place<rowSize; place++ ))
+	do
+	if [[ ${gameBoard[$place,0]} == ${gameBoard[$place,1]} ]]
+	then
+		if [[ ${gameBoard[$place,0]} == ${gameBoard[$place,2]} ]]
+		then
+			if [[ ${gameBoard[$place,0]} == $currentPlayer ]]
+			then
+				#echo "Player $currentPlayer won"
+				winner=1
+				#return $won
+			fi
+		fi
+	fi
+	if [[ ${gameBoard[0,$place]} == ${gameBoard[1,$place]} ]]
+	then
+		if [[ ${gameBoard[0,$place]} == ${gameBoard[2,$place]} ]]
+		then
+			if [[ ${gameBoard[0,$place]} == $currentPlayer ]]
+			then
+				echo "Player $currentPlayer won"
+				#won=0
+				#return $won
+			fi
+		fi
+	fi
+	done
+}
+
 reset
 whoPlayFirst
 assignLetter
 display
+winningCheck
