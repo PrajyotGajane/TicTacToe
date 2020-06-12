@@ -24,4 +24,13 @@ function reset() {
 		done
 	done
 }
+function whoPlayFirst() {
+	turn=$((RANDOM % 2))
+	if [ $turn -eq 0 ]
+	then
+		playerSwitch=0
+		echo "Player plays first"
+	fi
+}
 reset
+whoPlayFirst
