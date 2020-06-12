@@ -178,8 +178,31 @@ if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
 	done
 }
 
+function computingToWin() {
+	for (( row=0;row<rowSize;row++ ))
+	do
+		for (( col=0;col<columnSize; col++ ))
+		do
+			if [[ ${gameBoard[$row,$col]} == "." ]]
+			then
+				gameBoard[$row,$col]=$computer
+				if [[ $winner -eq 1 ]]
+				then
+					display
+					echo "Winner is $computer"
+					exit
+				else
+					gameBoard[$row,$col]="."
+					block=0
+				fi
+			fi
+		done
+	done
+}
+
 reset
 whoPlayFirst
 assignLetter
 display
 winningCheck
+computingToWin
