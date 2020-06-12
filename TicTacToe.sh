@@ -223,7 +223,34 @@ function toBlock() {
 		done
 	done
 }
+function corners() {
+	if [[ ${gameBoard[0,0]} == . ]]
+	then
+		gameBoard[0,0]=$computer
+		local center=1
+		((count++))
+		break
+	elif [[ ${gameBoard[0,2]} == . ]]
+	then
+		gameBoard[0,2]=$computer
+		local center=1
+		((count++))
+		break
+	elif [[ ${gameBoard[2,0]} == . ]]
+	then
+		gameBoard[2,0]=$computer
+		local center=1
+		((count++))
+		break
+	elif [[ ${gameBoard[2,2]} == . ]]
+	then
+		gameBoard[2,2]=$computer
+		local center=1
+		((count++))
+		break
+	fi
 
+}
 reset
 whoPlayFirst
 assignLetter
