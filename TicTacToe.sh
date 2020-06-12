@@ -264,6 +264,30 @@ function checkCenter() {
 		fi
 }
 
+function takeSides() {
+	if [[ ${gameBoard[0,1]} == . ]]
+	then
+		gameBoard[0,1]=$computer
+		((count++))
+		break
+	elif [[ ${gameBoard[1,0]} == . ]]
+	then
+		gameBoard[1,0]=$computer
+		((count++))
+		break
+	elif [[ ${gameBoard[1,1]} == . ]]
+	then
+		gameBoard[1,1]=$computer
+		((count++))
+		break
+	elif [[ ${gameBoard[2,1]} == . ]]
+	then
+		gameBoard[2,1]=$computer
+		((count++))
+		break
+	fi
+}
+
 reset
 whoPlayFirst
 assignLetter
