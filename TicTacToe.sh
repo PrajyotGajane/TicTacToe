@@ -200,6 +200,30 @@ function computingToWin() {
 	done
 }
 
+function toBlock() {
+	for (( row=0;row<rowSize;row++ ))
+	do
+		for (( col=0;col<columnSize; col++ ))
+		do
+			if [[ ${gameBoard[$row,$col]]} == "." ]]
+			then
+				gameBoard[$row,$col]=$computer
+				if [[ $winner -eq 1 ]]
+				then
+					gameBoard[$row,$col]=$computer
+					winner=0
+					block=1
+					((count++))
+					display
+					break
+				else
+					gameBoard[$row,$col]="."
+				fi
+			fi
+		done
+	done
+}
+
 reset
 whoPlayFirst
 assignLetter
