@@ -53,6 +53,80 @@ function display() {
 	echo
 	echo "		*************************"
 }
+
+function playerTurn() {
+	echo "Players turn "
+	read -p "Enter number between 1 to 9" position
+	changeTurn=$player
+	isEmpty
+		case $position in
+		1)
+			row=0
+			column=0
+		;;
+		2)
+			row=0
+			column=1
+		;;
+		3)
+			row=0
+			column=2
+		;;
+		4)
+			row=1
+			column=0
+		;;
+		5)
+			row=1
+			column=1
+		;;
+		6)
+			row=1
+			column=2
+		;;
+		7)
+			row=2
+			column=0
+		;;
+		8)
+			row=2
+			column=1
+		;;
+		9)
+			row=2
+			column=2
+		;;
+		*)
+		echo "Wrong input"
+		;;
+	esac
+	gameBoard[$row,$column]=$player
+	playerSwitch=1
+	
+}
+function computerPlaying() {
+ echo "Computers turn:"
+ computingToWin
+ toBlock
+ if [[ $block == 0 ]]
+ then
+		corners
+ fi
+ playerSwitch=0
+}
+
+function playerSwitch() {
+	echo "Player letter is: $player || Computer letter is : $computer"
+	if [[ $playerSwitch == 0 ]]
+	then
+		playerTurn
+	else
+		computerPlaying
+	fi
+	echo "Checking winner"
+	winningCheck $changeTurn
+}
+
 function winningCheck() {
 if [[ ${gameBoard[0,0]} == ${gameBoard[1,1]} ]]
 	then
